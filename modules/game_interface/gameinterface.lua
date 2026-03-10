@@ -1301,7 +1301,7 @@ function refreshViewMode()
 		gameMapPanel:addAnchor(AnchorTop, "gameTopBar", AnchorBottom)
 		gameMapPanel:setKeepAspectRatio(true)
 		gameMapPanel:setLimitVisibleRange(false)
-		gameMapPanel:setZoom(15)
+		gameMapPanel:setZoom(11)
 		gameMapPanel:setOn(false)
 		modules.client_topmenu.getTopMenu():setImageColor("white")
 
