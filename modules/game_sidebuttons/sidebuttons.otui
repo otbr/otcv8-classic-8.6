@@ -62,13 +62,3 @@ NonClosableMiniWindow
       width: 34
       @onClick: modules.game_huntanalyzer.toggle()
 
-    InventoryButton
-      !text: tr('Shop')
-      anchors.left: logoutButton.left
-      anchors.top: logoutButton.bottom
-      anchors.right: logoutButton.right
-      width: 42
-      height: 20
-      margin-top: 3
-      @onClick: modules.game_shop.show()
-

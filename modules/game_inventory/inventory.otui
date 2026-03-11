@@ -194,14 +194,14 @@ NonClosableMiniWindow
       id: capLabel
       anchors.top: inventorySlotsPanel.top
       anchors.left: inventorySlotsPanel.left
-      margin-top: 126
-      margin-left: 77
+      margin-top: 130
+      margin-left: 80
 
     SoulCapLabel
       id: soulLabel
       anchors.top: inventorySlotsPanel.top
       anchors.left: inventorySlotsPanel.left
-      margin-top: 126
+      margin-top: 130
       margin-left: 5
 
     Panel
@@ -215,7 +215,7 @@ NonClosableMiniWindow
       padding: 2
       anchors.top: parent.top
       anchors.left: parent.left
-      margin-top: 150
+      margin-top: 152
       margin-left: 5
 
     Panel
@@ -225,11 +225,27 @@ NonClosableMiniWindow
       anchors.right: parent.right
       anchors.bottom: parent.bottom
 
+      UIButton
+        id: storeButton
+        image-source: /images/game/topbar/boost
+        size: 100 14
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        margin-left: -36
+        margin-right: -2
+        image-clip: 0 0 100 14
+        image-border: 3
+        @onClick: modules.game_shop.toggle()
+
+        $pressed:
+          image-clip: 0 14 100 14
+
       FightOffensiveBox
         id: fightOffensiveBox
         anchors.left: parent.left
-        anchors.top: parent.top
-        margin-top: 18
+        anchors.top: storeButton.bottom
+        margin-top: 4
         margin-left: 8
 
       FightBalancedBox
@@ -264,20 +280,30 @@ NonClosableMiniWindow
         anchors.top: chaseModeBoxChase.bottom
         margin-top: 1
         
-      MountButton
-        id: mountButton
-        anchors.left: prev.left
+      InventoryButton
+        id: botButton
+        !text: tr('Bot')
+        anchors.left: fightDefensiveBox.left
         anchors.top: prev.bottom
         margin-top: 1
+        width: 20
+        height: 20
+        @onClick: modules.game_bot.toggle()
+
+      MountButton
+        id: mountButton
+        anchors.left: botButton.right
+        anchors.top: botButton.top
+        margin-left: 2
 
       InventoryButton
-        id: optionsButton
-        !text: tr('Options')
+        id: stopButton
+        !text: tr('Stop')
         anchors.top: prev.bottom
         anchors.left: fightDefensiveBox.left
         anchors.right: safeFightBox.right
         margin-top: 5
-        @onClick: modules.client_options.toggle()
+        @onClick: function() g_game.cancelAttackAndFollow() end
 
       InventoryButton
         id: questsButton
@@ -289,10 +315,12 @@ NonClosableMiniWindow
         @onClick: g_game.requestQuestLog()
 
       InventoryButton
-        id: botButton
-        !text: tr('Bot')
+        id: optionsButton
+        !text: tr('Options')
         anchors.top: prev.bottom
         anchors.left: prev.left
         anchors.right: prev.right
         margin-top: 3
-        @onClick: modules.game_bot.toggle()
+        @onClick: modules.client_options.toggle()
+
+
