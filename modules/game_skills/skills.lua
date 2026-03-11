@@ -409,10 +409,10 @@ function onOfflineTrainingChange(localPlayer, offlineTrainingTime)
 		minutes = "0" .. minutes
 	end
 
-	local percent = 100 * offlineTrainingTime / 720
+	local percent = math.floor((offlineTrainingTime / 720) * 100)
 
 	setSkillValue("offlineTraining", hours .. ":" .. minutes)
-	setSkillPercent("offlineTraining", percent, tr("You have %s percent", percent))
+	setSkillPercent("offlineTraining", percent, tr("You have %d percent", percent))
 end
 
 function onRegenerationChange(localPlayer, regenerationTime)
