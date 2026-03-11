@@ -339,12 +339,45 @@ function updateExpTooltip(localPlayer, playerLevel, playerExp)
 	expLabel:setTooltip(expString)
 end
 
+function formatExpNumber(value)
+	if value >= 1000000000000 then -- 1 Trillion
+		return string.format("%.3f T", value / 1000000000000)
+	elseif value >= 1000000000 then -- 1 Billion
+		return string.format("%.3f B", value / 1000000000)
+	elseif value >= 1000000 then -- 1 Million
+		local formatted = string.format("%.3f M", value / 1000000)
+		-- Add commas to the thousands part before the decimal 
+		-- e.g. 4485.123 -> 4,485.123
+		local k = formatted:reverse()
+		k = string.gsub(k, "^(M%s%d+%.%d%d%d)(%d+)", function(prefix, rest)
+			local withCommas = rest:gsub("(%d%d%d)", "%1,")
+			return prefix .. withCommas
+		end)
+		k = k:reverse()
+		k = k:gsub("^,", "")
+		return k
+	elseif value >= 1000 then -- 1 Thousand
+		return string.format("%.1f k", value / 1000)
+	else
+		return comma_value(value)
+	end
+end
+
+function formatLargeExp(value)
+	if value >= 1000000 then
+		local mil = math.floor(value / 1000000)
+		return comma_value(mil) .. " M"
+	else
+		return comma_value(value)
+	end
+end
+
 function onExperienceChange(localPlayer, value)
 	if value < 0 then
 		return
 	end
 
-	setSkillValue("experience", comma_value(value))
+	setSkillValue("experience", formatLargeExp(value))
 	addEvent(function ()
 		local localPlayer = g_game.getLocalPlayer()
 
