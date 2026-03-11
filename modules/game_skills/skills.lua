@@ -364,16 +364,11 @@ function formatExpNumber(value)
 end
 
 function formatLargeExp(value)
-	if value >= 1000000000000 then -- 1 Trillion
-		local trill = math.floor(value / 1000000000000)
-		return comma_value(trill) .. " T"
-	elseif value >= 1000000000 then -- 1 Billion
-		local bill = math.floor(value / 1000000000)
-		return comma_value(bill) .. " B"
-	elseif value >= 1000000 then -- 1 Million
+	if value >= 1000000 then 
+		-- Always format as M if it's over 1 Million, e.g. 4,485 M instead of 4 B
 		local mill = math.floor(value / 1000000)
 		return comma_value(mill) .. " M"
-	elseif value >= 1000 then -- 1 Thousand
+	elseif value >= 1000 then 
 		local thou = math.floor(value / 1000)
 		return comma_value(thou) .. " K"
 	else
