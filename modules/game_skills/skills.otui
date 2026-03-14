@@ -186,37 +186,37 @@ MiniWindow
     SmallSkillButton
       id: skillId7
       SkillNameLabel
-        !text: tr('Critical Hit Chance')
+        !text: tr('Critical Chance')
       SkillValueLabel
 
     SmallSkillButton
       id: skillId8
       SkillNameLabel
-        !text: tr('Critical Hit Damage')
+        !text: tr('Critical Damage')
       SkillValueLabel
 
     SmallSkillButton
       id: skillId9
       SkillNameLabel
-        !text: tr('Life Leech Chance')
+        !text: tr('Life Leech Chc.')
       SkillValueLabel
 
     SmallSkillButton
       id: skillId10
       SkillNameLabel
-        !text: tr('Life Leech Amount')
+        !text: tr('Life Leech Amt.')
       SkillValueLabel
 
     SmallSkillButton
       id: skillId11
       SkillNameLabel
-        !text: tr('Mana Leech Chance')
+        !text: tr('Mana Leech Chc.')
       SkillValueLabel
 
     SmallSkillButton
       id: skillId12
       SkillNameLabel
-        !text: tr('Mana Leech Amount')
+        !text: tr('Mana Leech Amt.')
       SkillValueLabel
 
   UIWidget

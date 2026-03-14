@@ -527,12 +527,40 @@ function onBaseMagicLevelChange(localPlayer, baseMagicLevel)
 	setSkillBase("magiclevel", localPlayer:getMagicLevel(), baseMagicLevel)
 end
 
+function formatSkillValue(id, value)
+	if id >= Skill.CriticalChance and id <= Skill.ManaLeechAmount then
+		return string.format("%.2f%%", value / 100)
+	end
+	return value
+end
+
 function onSkillChange(localPlayer, id, level, percent)
-	setSkillValue("skillId" .. id, level)
+	local skill = skillsWindow:recursiveGetChildById("skillId" .. id)
+	local widget = skill:getChildById("value")
+	widget:setText(formatSkillValue(id, level))
 	setSkillPercent("skillId" .. id, percent, tr("You have %s percent to go", 100 - percent))
 	onBaseSkillChange(localPlayer, id, localPlayer:getSkillBaseLevel(id))
 end
 
 function onBaseSkillChange(localPlayer, id, baseLevel)
-	setSkillBase("skillId" .. id, localPlayer:getSkillLevel(id), baseLevel)
+	local currentLevel = localPlayer:getSkillLevel(id)
+	if id >= Skill.CriticalChance and id <= Skill.ManaLeechAmount then
+		local skill = skillsWindow:recursiveGetChildById("skillId" .. id)
+		local widget = skill:getChildById("value")
+		if baseLevel <= 0 or currentLevel < 0 then
+			return
+		end
+		if baseLevel < currentLevel then
+			widget:setColor("#008b00")
+			skill:setTooltip(formatSkillValue(id, baseLevel) .. " +" .. formatSkillValue(id, currentLevel - baseLevel))
+		elseif currentLevel < baseLevel then
+			widget:setColor("#b22222")
+			skill:setTooltip(formatSkillValue(id, baseLevel) .. " " .. formatSkillValue(id, currentLevel - baseLevel))
+		else
+			widget:setColor("#bbbbbb")
+			skill:removeTooltip()
+		end
+	else
+		setSkillBase("skillId" .. id, currentLevel, baseLevel)
+	end
 end
