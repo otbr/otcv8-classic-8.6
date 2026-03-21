@@ -21,7 +21,7 @@ SkillValueLabel < GameLabel
   anchors.right: parent.right
   anchors.top: parent.top
   anchors.bottom: parent.bottom
-  anchors.left: prev.left
+  anchors.left: prev.right
 
 SkillPercentPanel < ProgressBar
   id: percent
@@ -183,20 +183,36 @@ MiniWindow
       SkillValueLabel
       SkillPercentPanel
 
+    UIWidget
+      id: criticalHitHeader
+      height: 14
+      margin-bottom: 2
+      visible: false
+      GameLabel
+        font: verdana-11px-monochrome
+        !text: tr('Critical Hit')
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        color: #b0b0b0
+
     SmallSkillButton
       id: skillId7
+      margin-left: 8
       SkillNameLabel
-        !text: tr('Critical Chance')
+        !text: tr('Chance')
       SkillValueLabel
 
     SmallSkillButton
       id: skillId8
+      margin-left: 8
       SkillNameLabel
-        !text: tr('Critical Damage')
+        !text: tr('Extra Dmg')
       SkillValueLabel
 
     SmallSkillButton
       id: skillId9
+      visible: false
       SkillNameLabel
         !text: tr('Life Leech Chc.')
       SkillValueLabel
@@ -204,11 +220,12 @@ MiniWindow
     SmallSkillButton
       id: skillId10
       SkillNameLabel
-        !text: tr('Life Leech Amt.')
+        !text: tr('Life Leech')
       SkillValueLabel
 
     SmallSkillButton
       id: skillId11
+      visible: false
       SkillNameLabel
         !text: tr('Mana Leech Chc.')
       SkillValueLabel
@@ -216,7 +233,7 @@ MiniWindow
     SmallSkillButton
       id: skillId12
       SkillNameLabel
-        !text: tr('Mana Leech Amt.')
+        !text: tr('Mana Leech')
       SkillValueLabel
 
   UIWidget

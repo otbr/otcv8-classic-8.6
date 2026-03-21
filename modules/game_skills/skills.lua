@@ -239,6 +239,16 @@ function refresh()
 		end
 	end
 
+	local critHeader = skillsWindow:recursiveGetChildById("criticalHitHeader")
+	if critHeader then
+		critHeader:setVisible(hasAdditionalSkills)
+	end
+
+	local skillLeechChc1 = skillsWindow:recursiveGetChildById("skillId9")
+	if skillLeechChc1 then skillLeechChc1:setVisible(false) end
+	local skillLeechChc2 = skillsWindow:recursiveGetChildById("skillId11")
+	if skillLeechChc2 then skillLeechChc2:setVisible(false) end
+
 	update()
 
 	local contentsPanel = skillsWindow:getChildById("contentsPanel")
@@ -246,7 +256,7 @@ function refresh()
 	skillsWindow:setContentMinimumHeight(38)
 
 	if hasAdditionalSkills then
-		skillsWindow:setContentMaximumHeight(480)
+		skillsWindow:setContentMaximumHeight(464)
 	else
 		skillsWindow:setContentMaximumHeight(355)
 	end
@@ -538,7 +548,9 @@ function onSkillChange(localPlayer, id, level, percent)
 	local skill = skillsWindow:recursiveGetChildById("skillId" .. id)
 	local widget = skill:getChildById("value")
 	widget:setText(formatSkillValue(id, level))
-	setSkillPercent("skillId" .. id, percent, tr("You have %s percent to go", 100 - percent))
+	if id < Skill.CriticalChance then
+		setSkillPercent("skillId" .. id, percent, tr("You have %s percent to go", 100 - percent))
+	end
 	onBaseSkillChange(localPlayer, id, localPlayer:getSkillBaseLevel(id))
 end
 
@@ -547,18 +559,10 @@ function onBaseSkillChange(localPlayer, id, baseLevel)
 	if id >= Skill.CriticalChance and id <= Skill.ManaLeechAmount then
 		local skill = skillsWindow:recursiveGetChildById("skillId" .. id)
 		local widget = skill:getChildById("value")
-		if baseLevel <= 0 or currentLevel < 0 then
-			return
-		end
-		if baseLevel < currentLevel then
+		if currentLevel > 0 then
 			widget:setColor("#008b00")
-			skill:setTooltip(formatSkillValue(id, baseLevel) .. " +" .. formatSkillValue(id, currentLevel - baseLevel))
-		elseif currentLevel < baseLevel then
-			widget:setColor("#b22222")
-			skill:setTooltip(formatSkillValue(id, baseLevel) .. " " .. formatSkillValue(id, currentLevel - baseLevel))
 		else
 			widget:setColor("#bbbbbb")
-			skill:removeTooltip()
 		end
 	else
 		setSkillBase("skillId" .. id, currentLevel, baseLevel)
