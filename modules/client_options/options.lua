@@ -162,8 +162,6 @@ function init()
 	consoleTab = optionsTabBar:addTab(tr("Console"), consolePanel)
 	graphicsPanel = g_ui.loadUI("graphics")
 	graphicsTab = optionsTabBar:addTab(tr("Graphics"), graphicsPanel)
-	hotkeyPanel = g_ui.loadUI("hotkeys")
-	hotkeyTab = optionsTabBar:addTab(tr("Hotkeys"), hotkeyPanel)
 	customPanel = g_ui.loadUI("custom")
 
 	optionsTabBar:addTab(tr("Actionbars"), customPanel)
