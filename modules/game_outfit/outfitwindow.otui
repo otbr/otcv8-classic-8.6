@@ -1,6 +1,302 @@
+LongButton < Button
+  height: 20
+
 FloorTile < UIWidget
   image-source: /images/game/floor
   size: 32 32
   phantom: true
 
-OutfitWindow
+RotateButton < UIButton
+  image-source: /images/ui/rotate_button
+  image-color: #dfdfdf
+  size: 20 20
+
+  $hover:
+    image-color: #ffffff
+
+MainWindow
+  size: 505 360
+  padding-left: 20
+  padding-right: 20
+  padding-top: 25
+  text: Select Outfit
+  color: #999999
+  @onEnter: modules.game_outfit.accept()
+  @onEscape: modules.game_outfit.destroy()
+
+  FlatPanel
+    id: creaturePanel
+    anchors.left: parent.left
+    anchors.top: parent.top
+    margin-top: 5
+    size: 140 140
+    phantom: true
+
+    UICreature
+      id: creature
+      anchors.centerIn: parent
+      margin-bottom: 12
+      margin-right: 12
+      size: 128 128
+      phantom: true
+      clipping: true
+    
+  UIButton
+    id: previousOutfit
+    image-source: /images/game/outfit/outfit_arrows
+    image-clip: 0 0 20 20
+    size: 20 20
+    anchors.top: prev.bottom
+    anchors.left: prev.left
+    margin-top: 5
+    @onClick: modules.game_outfit.cycleOutfit(-1)
+
+    $pressed:
+      image-clip: 40 0 20 20
+
+  FlatPanel
+    id: outfitName
+    anchors.top: prev.top
+    anchors.bottom: prev.bottom
+    anchors.left: prev.right
+    anchors.right: next.left
+    margin-left: 4
+    margin-right: 4
+
+  UIButton
+    id: nextOutfit
+    image-source: /images/game/outfit/outfit_arrows
+    image-clip: 20 0 20 20
+    size: 20 20
+    anchors.top: previousOutfit.top
+    anchors.right: creaturePanel.right
+    @onClick: modules.game_outfit.cycleOutfit(1)
+
+    $pressed:
+      image-clip: 60 0 20 20
+
+  LongButton
+    id: head
+    !text: tr('Head')
+    width: 60
+    anchors.top: creaturePanel.top
+    anchors.left: creaturePanel.right
+    margin-left: 15
+  
+  LongButton
+    id: body
+    !text: tr('Primary')
+    width: 60
+    anchors.top: prev.bottom
+    anchors.left: prev.left
+    margin-top: 5
+  
+  LongButton
+    id: legs
+    !text: tr('Secondary')
+    width: 60
+    anchors.top: prev.bottom
+    anchors.left: prev.left
+    margin-top: 5
+  
+  LongButton
+    id: feet
+    !text: tr('Detail')
+    width: 60
+    anchors.top: prev.bottom
+    anchors.left: prev.left
+    margin-top: 5
+  
+  Panel
+    id: colorBoxPanel
+    anchors.left: prev.right
+    anchors.right: parent.right
+    anchors.top: creaturePanel.top
+    margin-left: 5
+    height: 90
+    layout:
+      type: grid
+      cell-size: 11 11
+      cell-spacing: 2
+      num-columns: 19
+      num-lines: 7
+  
+  FlatPanel
+    id: addon1
+    height: 22
+    anchors.top: colorBoxPanel.bottom
+    anchors.left: feet.left
+    anchors.right: mountPanel.left
+    margin-top: 15
+    margin-right: 10
+
+    CheckBox
+      id: check
+      !text: tr('Addon 1')
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin-left: 5
+      enabled: false
+
+  FlatPanel
+    id: addon2
+    height: 22
+    anchors.left: prev.left
+    anchors.right: prev.right
+    anchors.top: prev.bottom
+    margin-top: 5
+
+    CheckBox
+      id: check
+      !text: tr('Addon 2')
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin-left: 5
+      enabled: false
+      
+  FlatPanel
+    id: addon3
+    height: 22
+    anchors.left: prev.left
+    anchors.right: prev.right
+    anchors.top: prev.bottom
+    margin-top: 5
+
+    CheckBox
+      id: check
+      !text: tr('Addon 3')
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.left: parent.left
+      anchors.right: parent.right
+      margin-left: 5
+      enabled: false
+
+  FlatPanel
+    id: mountPanel
+    anchors.right: parent.right
+    anchors.top: feet.bottom
+    margin-top: 12
+    size: 140 140
+    phantom: true
+
+    UICreature
+      id: mount
+      anchors.centerIn: parent
+      margin-bottom: 12
+      margin-right: 12
+      size: 128 128
+      phantom: true
+      clipping: true
+    
+  UIButton
+    id: previousMount
+    image-source: /images/game/outfit/outfit_arrows
+    image-clip: 0 0 20 20
+    size: 20 20
+    anchors.top: prev.bottom
+    anchors.left: prev.left
+    margin-top: 5
+    @onClick: modules.game_outfit.cycleMount(-1)
+
+    $pressed:
+      image-clip: 40 0 20 20
+
+  FlatPanel
+    id: mountName
+    anchors.top: prev.top
+    anchors.bottom: prev.bottom
+    anchors.left: prev.right
+    anchors.right: next.left
+    margin-left: 4
+    margin-right: 4
+
+  UIButton
+    id: nextMount
+    image-source: /images/game/outfit/outfit_arrows
+    image-clip: 20 0 20 20
+    size: 20 20
+    anchors.top: previousMount.top
+    anchors.right: mountPanel.right
+    @onClick: modules.game_outfit.cycleMount(1)
+
+    $pressed:
+      image-clip: 60 0 20 20
+
+  Label
+    anchors.top: addon3.bottom
+    anchors.left: parent.left
+    anchors.right: mountPanel.left
+    margin-top: 10
+    margin-right: 10
+    !text: tr("Select an outfit by clicking on the arrows below the character box. Individualise the single parts by using the colour palette. If you are premium and have earned an outfit addon, you can activate it by checking the corresponding box. Mounts earned in the game can be selected from the right-hand box.") 
+    text-wrap: true
+    text-auto-resize: true
+  
+  HorizontalSeparator
+    anchors.top: mountName.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 25
+  
+  LongButton
+    text: Cancel
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    @onClick: modules.game_outfit.destroy()
+  
+  LongButton
+    text: Ok
+    anchors.top: prev.top
+    anchors.right: prev.left
+    margin-right: 8
+    @onClick: modules.game_outfit.accept()
+
+  LongButton
+    id: test
+    !text: tr('Randomize Colors')
+    !tooltip: tr('Click on it to give your character any random color.')
+    width: 95
+    anchors.top: outfitName.bottom
+    anchors.left: outfitName.left
+    margin-top: 5
+    margin-left: 0
+    @onClick: modules.game_outfit.randomize()
+
+  RotateButton
+    image-clip: 0 0 20 20
+    anchors.top: creaturePanel.top
+    anchors.left: creaturePanel.left
+    @onClick: modules.game_outfit.rotateOutfitRight()
+
+    $pressed:
+      image-clip: 0 20 20 20
+      
+  RotateButton
+    image-clip: 20 0 20 20
+    anchors.top: creaturePanel.top
+    anchors.right: creaturePanel.right
+    @onClick: modules.game_outfit.rotateOutfitLeft()
+
+    $pressed:
+      image-clip: 20 20 20 20
+
+
+  RotateButton
+    image-clip: 0 0 20 20
+    anchors.top: mountPanel.top
+    anchors.left: mountPanel.left
+    @onClick: modules.game_outfit.rotateMountRight()
+
+    $pressed:
+      image-clip: 0 20 20 20
+      
+  RotateButton
+    image-clip: 20 0 20 20
+    anchors.top: mountPanel.top
+    anchors.right: mountPanel.right
+    @onClick: modules.game_outfit.rotateMountLeft()
+
+    $pressed:
+      image-clip: 20 20 20 20
