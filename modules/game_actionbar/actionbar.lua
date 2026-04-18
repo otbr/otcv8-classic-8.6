@@ -554,7 +554,7 @@ function setupButton(widget)
 
 	local hotkeyDesc = widget.hotkey and widget.hotkey:len() > 0 and widget.hotkey or "None"
 	local tooltip = "Action Button " .. id
-	tooltip = tooltip .. "\n\n\tAction:  " .. actionDesc
+	tooltip = tooltip .. "\n\n\tAction:  " .. (actionDesc or "None")
 	tooltip = tooltip .. "\nHotkeys:  " .. hotkeyDesc
 
 	widget.item:setTooltip(tooltip)
