@@ -227,7 +227,7 @@ NonClosableMiniWindow
 
       UIButton
         id: storeButton
-        image-source: /images/game/topbar/boost
+        image-source: /images/game/topbar/store
         size: 100 14
         anchors.left: parent.left
         anchors.right: parent.right
@@ -236,7 +236,7 @@ NonClosableMiniWindow
         margin-right: -2
         image-clip: 0 0 100 14
         image-border: 3
-        @onClick: modules.game_shop.toggle()
+        @onClick: if modules.game_shop then modules.game_shop.toggle() end
 
         $pressed:
           image-clip: 0 14 100 14
