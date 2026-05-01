@@ -352,3 +352,21 @@ NonClosableMiniWindow
       anchors.right: prev.right
       margin-top: 2
       @onClick: self:getParent().minimap:reset()
+
+    UIButton
+      id: bigMapButton
+      size: 20 20
+      anchors.right: prev.left
+      anchors.top: prev.top
+      margin-top: -2
+      margin-right: 11
+      !tooltip: tr('Open big minimap')
+      icon-source: /images/topbuttons/bigmap
+      icon-clip: 0 0 20 20
+      @onClick: modules.game_minimap_big.toggle()
+
+      $on:
+        icon-clip: 20 0 20 20
+
+      $pressed:
+        icon-clip: 20 0 20 20
