@@ -16,7 +16,7 @@ InfoWindow < MainWindow
       text-auto-resize: true
       text-align: center
       margin-top: 8
-      !text: tr('Tibia Otcv8 Linux Client\nProtocol 8.60\nOTClientV8 3.1 Rev 225\nClassic UI\nAll rights reserved.')
+      !text: tr('Tibia Windows Client\nVersion 8.60\nCopyright (C) 2002-2010\nCipSoft GmbH\nAll rights reserved.')
       opacity: 0.7
 
     HorizontalSeparator
@@ -41,8 +41,8 @@ InfoWindow < MainWindow
       anchors.left: prev.right
       anchors.right: separator.right
       margin-left: 10
-      text: www.tibiaotcv8.com
-      @onClick: g_platform.openUrl("http://www.tibiaotcv8.com")
+      text: www.tibia.com
+      @onClick: g_platform.openUrl("http://www.tibia.com")
 
   HorizontalSeparator
     anchors.left: parent.left
@@ -104,7 +104,7 @@ UIWidget
       text: Access Account
       anchors.top: prev.bottom
       margin-top: 10
-      @onClick: g_platform.openUrl("http://www.tibiaotcv8.com")
+      @onClick: g_platform.openUrl("http://www.tibia.com")
 
     MenuButton
       text: Options
