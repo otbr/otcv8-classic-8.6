@@ -136,14 +136,20 @@ OptionPanel
       self:addOption("High")
       self:addOption("Maximum")
 
-  OptionCheckBox
-    id: classicView
-    !text: tr('Classic view')
-    margin-top: 5
-    visible: false
-    
-    $mobile:
-      visible: false
+  FlatPanel
+    height: 22
+    margin-top: 8
+
+    OptionCheckBox
+      id: classicView
+      !text: tr('Classic view')
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.top: parent.top
+      margin: 5
+      
+      $mobile:
+        visible: false
 
   OptionCheckBox
     id: cacheMap
