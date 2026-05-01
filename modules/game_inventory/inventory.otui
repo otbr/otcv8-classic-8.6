@@ -231,7 +231,7 @@ NonClosableMiniWindow
         margin-right: -2
         image-clip: 0 0 100 14
         image-border: 3
-        @onClick: if modules.game_shop then modules.game_shop.toggle() end
+        @onClick: if modules.game_store then modules.game_store.toggle() end
 
         $pressed:
           image-clip: 0 14 100 14
