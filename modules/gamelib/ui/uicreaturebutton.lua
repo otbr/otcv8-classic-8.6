@@ -40,6 +40,7 @@ function UICreatureButton:setup(id)
   self.creatureWidget = self:getChildById('creature')
   self.labelWidget = self:getChildById('label')
   self.skullWidget = self:getChildById('skull')
+  self.shieldWidget = self:getChildById('shield')
   self.emblemWidget = self:getChildById('emblem')
 end
 
@@ -80,6 +81,7 @@ function UICreatureButton:creatureSetup(creature)
 
 	self:updateLifeBarPercent()
 	self:updateSkull()
+	self:updateShield()
 	self:updateEmblem()
   self:update()
 end
@@ -102,6 +104,31 @@ function UICreatureButton:updateSkull()
   else
     self.skullWidget:setWidth(0)
     if self.creature:getEmblem() == EmblemNone then
+      self.labelWidget:setMarginLeft(2)
+    end
+  end
+end
+
+function UICreatureButton:updateShield()
+  if not self.creature then
+    return
+  end
+  local shieldId = self.creature:getShield()
+  if shieldId == self.shieldId then
+    return
+  end
+  self.shieldId = shieldId
+
+  if shieldId ~= ShieldNone then
+    self.shieldWidget:setWidth(self.shieldWidget:getHeight())
+    local imagePath = getShieldImagePathAndBlink(shieldId)
+    if imagePath then
+      self.shieldWidget:setImageSource(imagePath)
+    end
+    self.labelWidget:setMarginLeft(5)
+  else
+    self.shieldWidget:setWidth(0)
+    if self.creature:getSkull() == SkullNone and self.creature:getEmblem() == EmblemNone then
       self.labelWidget:setMarginLeft(2)
     end
   end

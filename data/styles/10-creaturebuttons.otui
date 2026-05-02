@@ -26,9 +26,16 @@ CreatureButton < UICreatureButton
     phantom: true
 
   UIWidget
-    id: emblem
+    id: shield
     height: 11
     anchors.left: skull.right
+    anchors.top: creature.top
+    phantom: true
+
+  UIWidget
+    id: emblem
+    height: 11
+    anchors.left: shield.right
     anchors.top: creature.top
     phantom: true
 
