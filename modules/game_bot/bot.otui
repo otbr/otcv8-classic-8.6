@@ -23,6 +23,7 @@ BotTabBarButton < TabBarButton
 MiniWindow
   id: botWindow
   !text: tr('Bot')
+  width: 190
   height: 600
   icon: /images/topbuttons/bot
   @onClose: modules.game_bot.onMiniWindowClose()
