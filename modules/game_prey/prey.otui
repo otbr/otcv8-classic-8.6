@@ -204,8 +204,6 @@ ActivePreyPanel < Panel
       margin-top: 2
       anchors.verticalCenter: parent.verticalCenter
       anchors.left: parent.left
-      image-source: /images/ui/panel_flat
-      image-border: 1
       size: 155 15
       font: verdana-11px-rounded
       text: Automatic Bonus Rer...
@@ -231,8 +229,6 @@ ActivePreyPanel < Panel
       margin-top: 2
       anchors.verticalCenter: parent.verticalCenter
       anchors.left: parent.left
-      image-source: /images/ui/panel_flat
-      image-border: 1
       size: 155 15
       font: verdana-11px-rounded
       text: Lock Prey
@@ -257,7 +253,7 @@ CreatureAndBonus < Panel
     size: 124 124
     image-source: /images/ui/panel_flat
     image-border: 1
-    padding: 5
+    padding: -2 5 5 -2
 
   FlatPanel
     id: bonus
@@ -491,6 +487,18 @@ PreyCreatureBox < UICheckBox
     anchors.fill: parent
     image-color: #ffffffff
     margin-top: 3
+
+  Label
+    id: name
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    margin-left: 2
+    margin-right: 2
+    font: verdana-11px-rounded
+    text-align: center
+    text-wrap: true
+    color: #ffffff
 
   $checked on:
     border-color: #ffffff

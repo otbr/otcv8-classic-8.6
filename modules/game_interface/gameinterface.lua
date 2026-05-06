@@ -122,8 +122,8 @@ function terminate()
 end
 
 function onGameStart()
-	refreshViewMode()
 	show()
+	addEvent(refreshViewMode)
 
 	if not g_game.isOfficialTibia() then
 		g_game.enableFeature(GameForceFirstAutoWalkStep)
@@ -1332,7 +1332,7 @@ function refreshViewMode()
 		end
 	end
 
-	if g_settings.getBoolean("cacheMap") then
+	if g_settings.getBoolean("cacheMap") or not classic then
 		g_game.enableFeature(GameBiggerMapCache)
 	end
 
@@ -1349,23 +1349,12 @@ function updateSize()
 	end
 
 	local classic = g_settings.getBoolean("classicView") and not g_app.isMobile()
-	local height = gameMapPanel:getHeight()
-	local width = gameMapPanel:getWidth()
 
 	if not classic then
 		local rheight = gameRootPanel:getHeight()
-		local rwidth = gameRootPanel:getWidth()
 		local dimenstion = gameMapPanel:getVisibleDimension()
-		local zoom = gameMapPanel:getZoom()
-		local awareRange = g_map.getAwareRange()
 		local dheight = dimenstion.height
-		local dwidth = dimenstion.width
 		local tileSize = rheight / dheight
-		local maxWidth = tileSize * (awareRange.width + 1)
-
-		if g_game.getFeature(GameChangeMapAwareRange) and g_game.getFeature(GameNewWalking) then
-			maxWidth = tileSize * (awareRange.width - 1)
-		end
 
 		gameMapPanel:setMarginTop(-tileSize)
 
@@ -1373,15 +1362,8 @@ function updateSize()
 			modules.game_stats.ui:setMarginTop(tileSize)
 		end
 
-		if g_settings.getBoolean("cacheMap") then
-			gameMapPanel:setMarginLeft(0)
-			gameMapPanel:setMarginRight(0)
-		else
-			local margin = math.max(0, math.floor((rwidth - maxWidth) / 2))
-
-			gameMapPanel:setMarginLeft(margin)
-			gameMapPanel:setMarginRight(margin)
-		end
+		gameMapPanel:setMarginLeft(0)
+		gameMapPanel:setMarginRight(0)
 	elseif modules.game_stats then
 		modules.game_stats.ui:setMarginTop(0)
 	end

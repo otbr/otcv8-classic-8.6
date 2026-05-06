@@ -11,7 +11,7 @@ NonClosableMiniWindow
       image-source: buttons/store
       anchors.left: parent.left
       anchors.top: parent.top
-      margin-top: 4
+      margin-top: 0
       margin-left: 5
       size: 108 20
       image-clip: 0 0 108 20
@@ -79,3 +79,26 @@ NonClosableMiniWindow
       width: 34
       @onClick: modules.game_huntanalyzer.toggle()
 
+    InventoryButton
+      id: preyButton
+      !text: tr('Prey')
+      tooltip: Prey Dialog
+      anchors.left: prev.right
+      anchors.top: prev.top
+      margin-left: 4
+      margin-top: 0
+      height: 20
+      width: 34
+      @onClick: if modules.game_prey then modules.game_prey.toggle() end
+
+    InventoryButton
+      id: preyTrackerButton
+      !text: tr('Track')
+      tooltip: Prey Tracker
+      anchors.left: prev.right
+      anchors.top: prev.top
+      margin-left: 4
+      margin-top: 0
+      height: 20
+      width: 42
+      @onClick: if modules.game_prey then modules.game_prey.toggleTracker() end

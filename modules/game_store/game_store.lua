@@ -30,7 +30,8 @@ local categoryIconClips = {
   store_premium = 20,
   store_cosmetics = 21,
   store_extras = 9,
-  store_services = 7
+  store_services = 7,
+  store_prey = 9
 }
 
 local categories = {}
@@ -86,6 +87,12 @@ local function getStoreImage(icon)
   if g_resources.fileExists(source .. ".png") then
     return source
   end
+
+  source = "/images/game/prey/" .. icon
+  if g_resources.fileExists(source .. ".png") then
+    return source
+  end
+
   return nil
 end
 

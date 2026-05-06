@@ -5,6 +5,8 @@ vipButton = nil
 questButton = nil
 botButton = nil
 expHourButton = nil
+preyButton = nil
+preyTrackerButton = nil
 
 function init()
 	buttonsWindow = g_ui.loadUI("sidebuttons", modules.game_interface.getRightPanel())
@@ -18,7 +20,9 @@ function init()
 	vipButton = buttonsWindow:recursiveGetChildById("vipButton")
 	questButton = buttonsWindow:recursiveGetChildById("questButton")
 	botButton = buttonsWindow:recursiveGetChildById("botButton")
-	expHourButton = buttonsWindow:recursiveGetChildById("botButton")
+	expHourButton = buttonsWindow:recursiveGetChildById("exphButton")
+	preyButton = buttonsWindow:recursiveGetChildById("preyButton")
+	preyTrackerButton = buttonsWindow:recursiveGetChildById("preyTrackerButton")
 end
 
 function terminate()

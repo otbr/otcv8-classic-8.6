@@ -11,14 +11,14 @@ function updateFeatures(version)
     if version <= 0 then
       return
     end
-    
+
     -- you can add custom features here, list of them is in the modules\gamelib\const.lua
     --g_game.enableFeature(GameBot)
     --g_game.enableFeature(GameExtendedOpcode)
     --g_game.enableFeature(GameMinimapLimitedToSingleFloor) -- it will generate minimap only for current floor
     --g_game.enableFeature(GameSpritesAlphaChannel)
     --g_game.enableFeature(GameOutfitShaders)
-    
+
     if(version >= 770) then
         g_game.enableFeature(GameLooktypeU16)
         g_game.enableFeature(GameMessageStatements)
@@ -57,7 +57,7 @@ function updateFeatures(version)
        if(version >= 860) then
             g_game.enableFeature(GameAttackSeq)
             g_game.enableFeature(GameBot)
-            g_game.enableFeature(GameExtendedOpcode)       
+            g_game.enableFeature(GameExtendedOpcode)
             g_game.enableFeature(GameSkillsBase)
             g_game.enableFeature(GamePlayerMounts)
             g_game.enableFeature(GameMagicEffectU16)
@@ -73,10 +73,11 @@ function updateFeatures(version)
 			g_game.enableFeature(GameExtendedClientPing)
             g_game.enableFeature(GameSpritesU32) -- Extended sprites
             --g_game.enableFeature(GameSpritesAlphaChannel) -- Transparency
-			g_game.enableFeature(GameDoublePlayerGoodsMoney) 
+			g_game.enableFeature(GameDoublePlayerGoodsMoney)
 		 	g_game.enableFeature(GameCreatureIcons)
 			g_game.enableFeature(GamePurseSlot)
-			 
+             g_game.enableFeature(GamePrey)
+
 			  g_game.enableFeature(GameSpritesU32) -- Extended sprites
 			   --g_game.enableFeature(GameDoubleExperience) -- Extended sprites
             --g_game.enableFeature(GameSpritesAlphaChannel) -- Transparency
@@ -210,21 +211,21 @@ function updateFeatures(version)
         g_game.enableFeature(GameAdditionalSkills)
 		--g_game.enableFeature(GameSpritesAlphaChannel)
     end
-    
+
     if(version >= 1100) then
-        g_game.enableFeature(GamePrey)    
+        g_game.enableFeature(GamePrey)
         g_game.enableFeature(GameMagicEffectU16)
         --g_game.enableFeature(GameDisplayItemDuration)
 		g_game.enableFeature(GameSpritesAlphaChannel)
 
     end
-    
+
     if(version >= 1200) then
       g_game.enableFeature(GameSequencedPackets)
       --g_game.enableFeature(GameSendWorldName)
       g_game.enableFeature(GamePlayerStateU32)
       g_game.enableFeature(GameTibia12Protocol)
     end
-    
+
     modules.game_things.load()
 end

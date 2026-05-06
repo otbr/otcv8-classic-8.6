@@ -297,6 +297,28 @@ local function syncOptionWidget(widget, value)
 	end
 end
 
+local function syncAliasOptionWidget(window, key, value)
+	local aliasKey
+	local aliasValue
+
+	if key == "classicView" then
+		aliasKey = "mapView"
+		aliasValue = not value
+	elseif key == "mapView" then
+		aliasKey = "classicView"
+		aliasValue = not value
+	end
+
+	if not aliasKey then
+		return
+	end
+
+	local aliasWidget = window:recursiveGetChildById(aliasKey)
+	if aliasWidget then
+		syncOptionWidget(aliasWidget, aliasValue)
+	end
+end
+
 function setOption(key, value, force)
 	local requestedKey = key
 	local requestedValue = value
@@ -428,6 +450,8 @@ function setOption(key, value, force)
 		if widget then
 			syncOptionWidget(widget, value)
 		end
+
+		syncAliasOptionWidget(win, key, value)
 
 		if requestedKey ~= key then
 			local requestedWidget = win:recursiveGetChildById(requestedKey)
