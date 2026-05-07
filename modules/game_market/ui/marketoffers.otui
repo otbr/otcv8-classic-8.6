@@ -9,7 +9,7 @@ Panel
 
   Panel
     id: leftTabContent
-    width: 180
+    width: 225
     anchors.top: prev.bottom
     anchors.left: prev.left
     anchors.bottom: parent.bottom
@@ -62,7 +62,7 @@ Panel
     text-offset: 0 2
     anchors.top: rightTabBar.top
     anchors.left: rightTabContent.left
-    margin-top: 355
+    margin-top: 380
     margin-left: 6
 
   Label

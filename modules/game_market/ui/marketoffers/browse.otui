@@ -60,8 +60,8 @@ Panel
     margin-top: 3
     margin-right: 3
     margin-left: 3
-    width: 40
-    height: 20
+    width: 48
+    height: 22
 
   MarketButtonBox
     id: filterVocation
@@ -72,8 +72,8 @@ Panel
     anchors.left: prev.right
     margin-right: 3
     margin-left: 3
-    width: 34
-    height: 20
+    width: 44
+    height: 22
 
   MarketComboBox
     id: slotComboBox
@@ -97,6 +97,7 @@ Panel
     margin-top: 6
     margin-right: 3
     margin-left: 3
+    height: 24
 
   Panel
     id: itemsContainer
@@ -126,7 +127,7 @@ Panel
       vertical-scrollbar: itemsPanelListScrollBar
       layout:
         type: grid
-        cell-size: 36 36
+        cell-size: 40 40
         flow: true
         auto-spacing: true
 

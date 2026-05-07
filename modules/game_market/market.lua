@@ -141,6 +141,27 @@ local function clearFilters()
 	end
 end
 
+local function normalizeOffer(offer)
+	if offer and not offer.getId and MarketOffer then
+		MarketOffer.__index = MarketOffer
+		setmetatable(offer, MarketOffer)
+	end
+	if offer and not offer.getId then
+		offer.getId = function(self) return self.id end
+		offer.getType = function(self) return self.type end
+		offer.getAmount = function(self) return self.amount end
+		offer.getPrice = function(self) return self.price end
+		offer.getPlayer = function(self) return self.player end
+		offer.getItem = function(self) return self.item end
+		offer.getState = function(self) return self.state end
+		offer.getTimeStamp = function(self) return self.id and self.id[1] end
+		offer.getCounter = function(self) return self.id and self.id[2] end
+		offer.isEqual = function(self, id) return self.id and id and self.id[1] == id[1] and self.id[2] == id[2] end
+		offer.isNull = function(self) return not self.id or table.empty(self.id) end
+	end
+	return offer
+end
+
 local function clearFee()
 	feeLabel:setText("")
 
@@ -157,6 +178,7 @@ local function refreshTypeList()
 end
 
 local function addOffer(offer, offerType)
+	offer = normalizeOffer(offer)
 	if not offer then
 		return false
 	end
@@ -306,6 +328,7 @@ local function addOffer(offer, offerType)
 end
 
 local function mergeOffer(offer)
+	offer = normalizeOffer(offer)
 	if not offer then
 		return false
 	end
@@ -390,6 +413,7 @@ local function updateHistoryOffers(offers)
 	myOfferHistoryTabel:toggleSorting(false)
 
 	for _, offer in ipairs(offers) do
+		offer = normalizeOffer(offer)
 		local offerType = offer:getType()
 		local id = offer:getId()
 		local player = offer:getPlayer()
@@ -1408,6 +1432,7 @@ function Market.refreshItemsWidget(selectItem)
 
 	if select then
 		radioItemSet:selectWidget(select, false)
+		updateSelectedItem(select)
 	end
 
 	layout:enableUpdates()
@@ -1632,7 +1657,7 @@ end
 function Market.onCoinBalance(coins, transferableCoins)
 	tibiaCoins = coins
 
-	if not marketItems[MarketCategory.TibiaCoins] then
+	if not information.depotItems or not marketItems[MarketCategory.TibiaCoins] then
 		return
 	end
 

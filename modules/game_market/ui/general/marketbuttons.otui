@@ -1,12 +1,12 @@
 MarketButtonBox < ButtonBoxRounded
   font: verdana-11px-rounded
-  color: #f55e5ebb
+  color: #d8d8d8ff
   size: 106 22
   text-offset: 0 2
   text-align: center
 
   $checked:
-    color: white
+    color: #ffffffff
 
   $disabled:
     color: #666666ff
