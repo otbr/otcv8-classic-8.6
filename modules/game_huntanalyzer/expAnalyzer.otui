@@ -66,10 +66,13 @@ MiniWindow
 
     exphButton
       id: exptolevel
-      height: 20
+      height: 34
       SkillNameLabel
         !text: tr('Remaining Exp:')
       SkillValueLabel
+        text-align: bottomright
+        anchors.top: parent.verticalCenter
+        anchors.left: parent.left
 
     exphButton
       id: timetolevel

@@ -183,6 +183,7 @@ end
 function showDropWindow()
 	if not dropWindow:isVisible() then
 		dropWindow:show()
+		updateDropTracker(lootedItems)
 	else
 		dropWindow:hide()
 	end
@@ -348,7 +349,7 @@ function getNumber(msg)
 end
 
 function number_format(amount)
-	local formatted = amount
+	local formatted = string.format("%.0f", tonumber(amount) or 0)
 
 	while true do
 		formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", "%1,%2")
@@ -460,7 +461,7 @@ function parseContainerItems(msg, items)
 		local item = Item.create(itemId)
 
 		if item:isContainer() then
-			parseContainerItems(msg)
+			parseContainerItems(msg, items)
 		else
 			local count = msg:getU8()
 			local moneyWorth = msg:getU16()
@@ -530,8 +531,19 @@ function onUpdateKillTracker(monsterName, lookType, lookHead, lookBody, lookLegs
 	for _, data in pairs(items) do
 		local itemName = data.itemName
 		local itemId = data.itemId
-		local count = data.count
-		-- No rarity logic
+		local count = data.count or 0
+		local worth = data.worth or 0
+
+		if not lootedItems[itemId] then
+			lootedItems[itemId] = {
+				amount = 0,
+				name = itemName,
+				worth = 0
+			}
+		end
+
+		lootedItems[itemId].amount = lootedItems[itemId].amount + count
+		lootedItems[itemId].worth = lootedItems[itemId].worth + worth
 
 	end
 
