@@ -10,12 +10,86 @@ monthProgressBar = nil
 daySkullWidget = nil
 weekSkullWidget = nil
 monthSkullWidget = nil
+refreshEvent = nil
+
+local OPCODE_UNJUSTIFIED_REQUEST = 0x2E
+local OPCODE_UNJUSTIFIED_SEND = 0x2F
+local ACTION_REFRESH = 1
+local REFRESH_DELAY = 30000
+
+local function sendRefreshRequest()
+	local protocolGame = g_game.getProtocolGame()
+	if not protocolGame then
+		return
+	end
+
+	local msg = OutputMessage.create()
+	msg:addU8(OPCODE_UNJUSTIFIED_REQUEST)
+	msg:addU8(ACTION_REFRESH)
+	protocolGame:send(msg)
+end
+
+local function formatSkullTime(seconds)
+	seconds = math.max(0, tonumber(seconds) or 0)
+	if seconds == 0 then
+		return "No skull"
+	end
+
+	local days = math.floor(seconds / 86400)
+	local hours = math.floor((seconds % 86400) / 3600)
+	local minutes = math.floor((seconds % 3600) / 60)
+	if days > 0 then
+		return string.format("%id %ih", days, hours)
+	elseif hours > 0 then
+		return string.format("%ih %im", hours, minutes)
+	end
+	return string.format("%im", math.max(1, minutes))
+end
+
+local function scheduleRefresh()
+	if refreshEvent then
+		removeEvent(refreshEvent)
+		refreshEvent = nil
+	end
+
+	if g_game.isOnline() then
+		refreshEvent = scheduleEvent(function()
+			refreshEvent = nil
+			sendRefreshRequest()
+			scheduleRefresh()
+		end, REFRESH_DELAY)
+	end
+end
+
+local function registerProtocol()
+	ProtocolGame.unregisterOpcode(OPCODE_UNJUSTIFIED_SEND)
+	ProtocolGame.registerOpcode(OPCODE_UNJUSTIFIED_SEND, function(protocol, msg)
+		local unjustifiedPoints = {
+			killsDay = msg:getU8(),
+			killsDayRemaining = msg:getU8(),
+			killsWeek = msg:getU8(),
+			killsWeekRemaining = msg:getU8(),
+			killsMonth = msg:getU8(),
+			killsMonthRemaining = msg:getU8(),
+			skullTimeSeconds = msg:getU32()
+		}
+		local openPvpSituations = msg:getU8()
+		local skull = msg:getU8()
+
+		onUnjustifiedPointsChange(unjustifiedPoints)
+		onOpenPvpSituationsChange(openPvpSituations)
+
+		local localPlayer = g_game.getLocalPlayer()
+		if localPlayer then
+			onSkullChange(localPlayer, skull)
+		end
+	end)
+end
 
 function init()
 	connect(g_game, {
 		onGameStart = online,
-		onUnjustifiedPointsChange = onUnjustifiedPointsChange,
-		onOpenPvpSituationsChange = onOpenPvpSituationsChange
+		onGameEnd = offline
 	})
 	connect(LocalPlayer, {
 		onSkullChange = onSkullChange
@@ -50,12 +124,16 @@ end
 function terminate()
 	disconnect(g_game, {
 		onGameStart = online,
-		onUnjustifiedPointsChange = onUnjustifiedPointsChange,
-		onOpenPvpSituationsChange = onOpenPvpSituationsChange
+		onGameEnd = offline
 	})
 	disconnect(LocalPlayer, {
 		onSkullChange = onSkullChange
 	})
+	if refreshEvent then
+		removeEvent(refreshEvent)
+		refreshEvent = nil
+	end
+	ProtocolGame.unregisterOpcode(OPCODE_UNJUSTIFIED_SEND)
 	unjustifiedPointsWindow:destroy()
 	unjustifiedPointsButton:destroy()
 end
@@ -75,23 +153,27 @@ function toggle()
 end
 
 function online()
-	if g_game.getFeature(GameUnjustifiedPoints) then
-		unjustifiedPointsButton:show()
-	else
-		unjustifiedPointsButton:hide()
-		unjustifiedPointsWindow:close()
-	end
-
+	registerProtocol()
+	unjustifiedPointsButton:show()
 	refresh()
+	scheduleRefresh()
+end
+
+function offline()
+	unjustifiedPointsButton:hide()
+	unjustifiedPointsWindow:close()
+	if refreshEvent then
+		removeEvent(refreshEvent)
+		refreshEvent = nil
+	end
 end
 
 function refresh()
 	local localPlayer = g_game.getLocalPlayer()
-	local unjustifiedPoints = g_game.getUnjustifiedPoints()
-
-	onUnjustifiedPointsChange(unjustifiedPoints)
-	onSkullChange(localPlayer, localPlayer:getSkull())
-	onOpenPvpSituationsChange(g_game.getOpenPvpSituations())
+	if localPlayer then
+		onSkullChange(localPlayer, localPlayer:getSkull())
+	end
+	sendRefreshRequest()
 end
 
 function onSkullChange(localPlayer, skull)
@@ -127,11 +209,12 @@ local function getColorByKills(kills)
 end
 
 function onUnjustifiedPointsChange(unjustifiedPoints)
-	if unjustifiedPoints.skullTime == 0 then
+	local skullTimeSeconds = unjustifiedPoints.skullTimeSeconds or unjustifiedPoints.skullTime or 0
+	if skullTimeSeconds == 0 then
 		skullTimeLabel:setText("No skull")
 		skullTimeLabel:setTooltip("You have no skull")
 	else
-		skullTimeLabel:setText(unjustifiedPoints.skullTime .. " days")
+		skullTimeLabel:setText(formatSkullTime(skullTimeSeconds))
 		skullTimeLabel:setTooltip("Remaining skull time")
 	end
 

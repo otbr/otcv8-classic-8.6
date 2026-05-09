@@ -138,6 +138,16 @@ SupplyStashWindow
     margin-right: 0
     @onClick: toggle()
 
+  Button
+    id: stowAllButton
+    size: 62 20
+    anchors.bottom: parent.bottom
+    anchors.right: closeButton.left
+    !text: tr('Stow All')
+    font: cipsoftFont
+    margin-right: 8
+    @onClick: stowAll()
+
   HorizontalSeparator
     id: horizontalSeparator
     anchors.bottom: prev.top
