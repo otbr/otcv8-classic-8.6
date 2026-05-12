@@ -86,8 +86,8 @@ void UIManager::inputEvent(const InputEvent& event)
             m_keyboardReceiver->propagateOnKeyDown(event.keyCode, event.keyboardModifiers);
             break;
         case Fw::KeyPressInputEvent:
-            g_lua.callGlobalField("g_ui", "onKeyPress", event.keyCode, event.keyboardModifiers, event.autoRepeatTicks);
-            m_keyboardReceiver->propagateOnKeyPress(event.keyCode, event.keyboardModifiers, event.autoRepeatTicks);
+            if(!g_lua.callGlobalField<bool>("g_ui", "onKeyPress", event.keyCode, event.keyboardModifiers, event.autoRepeatTicks))
+                m_keyboardReceiver->propagateOnKeyPress(event.keyCode, event.keyboardModifiers, event.autoRepeatTicks);
             break;
         case Fw::KeyUpInputEvent:
             g_lua.callGlobalField("g_ui", "onKeyUp", event.keyCode, event.keyboardModifiers);

@@ -24,6 +24,8 @@ SupplyStashWindow < UIWindow
 StashItem < UIItem
   image-source: /images/ui/item/none
   size: 32 32
+  draggable: false
+  @onDrop: function(self, widget, mousePos) return blockItemDrop(self, widget, mousePos) end
   
   Label
     id: count
@@ -33,6 +35,7 @@ StashItem < UIItem
     margin-right: 2
     text-align: right
     font: verdana-11px-rounded
+    @onDrop: function(self, widget, mousePos) return blockItemDrop(self, widget, mousePos) end
 
   $disabled:
     image-source: assets/emptySlot
@@ -43,20 +46,17 @@ SupplyStashWindow
   color: #909090
   visible: false
   @onEscape: toggle()
+  @onDrop: function(self, widget, mousePos) return blockItemDrop(self, widget, mousePos) end
 
   ComboBox
-    id: itemTypes
+    id: categoryFilter
     size: 190 20
     anchors.top: parent.top
     anchors.left: parent.left
     text-align: center
-    @onOptionChange: placeholder()
-    @onSetup: |
-      self:addOption("Show all")
-      self:addOption("Show food")
 
   ComboBox
-    id: itemTypes
+    id: traderFilter
     size: 180 20
     anchors.verticalCenter: prev.verticalCenter
     anchors.left: prev.right
@@ -96,6 +96,7 @@ SupplyStashWindow
     anchors.bottom: horizontalSeparator.top
     anchors.left: parent.left
     margin-bottom: 7
+    @onDrop: function(self, widget, mousePos) return blockItemDrop(self, widget, mousePos) end
 
     UIScrollArea
       id: supplyItems
@@ -111,6 +112,7 @@ SupplyStashWindow
       layout: verticalBox
       padding: 1
       auto-focus: none
+      @onDrop: function(self, widget, mousePos) return blockItemDrop(self, widget, mousePos) end
       layout:
         type: grid
         cell-size: 32 32

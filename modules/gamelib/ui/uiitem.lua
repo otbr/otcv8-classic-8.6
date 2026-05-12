@@ -12,6 +12,9 @@ end
 
 function UIItem:onDragLeave(droppedWidget, mousePos)
   if self:isVirtual() then return false end
+  if modules.game_supplystash and modules.game_supplystash.handleItemDragLeave then
+    modules.game_supplystash.handleItemDragLeave(self, droppedWidget, mousePos)
+  end
   self.currentDragThing = nil
   g_mouse.popCursor('target')
   self:setBorderWidth(0)
@@ -20,6 +23,10 @@ function UIItem:onDragLeave(droppedWidget, mousePos)
 end
 
 function UIItem:onDrop(widget, mousePos, forced)
+  if modules.game_supplystash and modules.game_supplystash.shouldBlockItemDrop and modules.game_supplystash.shouldBlockItemDrop(self, widget, mousePos) then
+    return true
+  end
+
   if not self:canAcceptDrop(widget, mousePos) and not forced then return false end
 
   local item = widget.currentDragThing
@@ -34,6 +41,10 @@ function UIItem:onDrop(widget, mousePos, forced)
   end
 
   local toPos = self.position
+  if not toPos or not toPos.x or not toPos.y or not toPos.z then
+    self:setBorderWidth(0)
+    return true
+  end
 
   local itemPos = item:getPosition()
   if itemPos.x == toPos.x and itemPos.y == toPos.y and itemPos.z == toPos.z then return false end

@@ -1,16 +1,31 @@
 local background, clientVersionLabel, infoWindow, infoLabel = nil
+local infoEscCallback = nil
 
 function init()
 	background = g_ui.displayUI("background")
 
 	background:lower()
 
-	infoWindow = g_ui.createWidget("InfoWindow", background)
+	infoWindow = g_ui.createWidget("InfoWindow", rootWidget)
 	infoLabel = infoWindow:getChildById("infoLabel")
 
 	if infoLabel and g_app.getOs() == "windows" then
 		infoLabel:setText(infoLabel:getText():gsub("Linux", "Windows"))
 	end
+
+	infoWindow.onEscape = hideInfoWindow
+	infoWindow.onEnter = hideInfoWindow
+
+	if not infoEscCallback then
+		infoEscCallback = function ()
+			if infoWindow and infoWindow:isVisible() then
+				hideInfoWindow()
+				return true
+			end
+		end
+	end
+
+	g_keyboard.bindKeyDown("Escape", infoEscCallback, rootWidget)
 
 	infoWindow:hide()
 
@@ -39,6 +54,8 @@ function terminate()
 	disconnect(g_game, {
 		onGameEnd = show
 	})
+	hideInfoWindow()
+	g_keyboard.unbindKeyDown("Escape", infoEscCallback, rootWidget)
 	g_effects.cancelFade(background:getChildById("clientVersionLabel"))
 	background:destroy()
 	infoWindow:destroy()
@@ -48,6 +65,7 @@ function terminate()
 end
 
 function hide()
+	hideInfoWindow()
 	background:hide()
 end
 
@@ -58,6 +76,15 @@ end
 function showInfoWindow()
 	if not infoWindow:isVisible() then
 		infoWindow:show()
+	end
+
+	infoWindow:raise()
+	infoWindow:focus()
+end
+
+function hideInfoWindow()
+	if infoWindow and infoWindow:isVisible() then
+		infoWindow:hide()
 	end
 end
 

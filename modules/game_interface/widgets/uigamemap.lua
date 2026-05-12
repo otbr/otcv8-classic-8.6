@@ -72,6 +72,10 @@ function UIGameMap:onDragLeave(droppedWidget, mousePos)
 end
 
 function UIGameMap:onDrop(widget, mousePos)
+	if modules.game_supplystash and modules.game_supplystash.shouldBlockItemDrop and modules.game_supplystash.shouldBlockItemDrop(self, widget, mousePos) then
+		return true
+	end
+
 	if not self:canAcceptDrop(widget, mousePos) then
 		return false
 	end

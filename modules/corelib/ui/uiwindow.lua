@@ -10,6 +10,10 @@ function UIWindow.create()
 	return window
 end
 
+function UIWindow:onEscape()
+	self:hide()
+end
+
 function UIWindow:onKeyDown(keyCode, keyboardModifiers)
 	if keyboardModifiers == KeyboardNoModifier then
 		if keyCode == KeyEnter then

@@ -10,6 +10,41 @@ function focusRoot()
 	end
 end
 
+local function closeTopEscapeWidget()
+	if not rootWidget then
+		return false
+	end
+
+	local children = rootWidget:recursiveGetChildren()
+
+	if not children then
+		return false
+	end
+
+	for i = #children, 1, -1 do
+		local child = children[i]
+
+		if child and child ~= rootWidget and child:isVisible() and child:isEnabled() and child.onEscape then
+			signalcall(child.onEscape, child)
+			return true
+		end
+	end
+
+	return false
+end
+
+function g_ui.onKeyPress(keyCode, keyboardModifiers, autoRepeatTicks)
+	if autoRepeatTicks ~= 0 then
+		return false
+	end
+
+	if keyboardModifiers == KeyboardNoModifier and keyCode == KeyEscape then
+		return closeTopEscapeWidget()
+	end
+
+	return false
+end
+
 function scheduleEvent(callback, delay)
 	local desc = "lua"
 	local info = debug.getinfo(2, "Sl")

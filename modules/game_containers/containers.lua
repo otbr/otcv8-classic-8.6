@@ -167,6 +167,10 @@ function onContainerOpen(container, previousContainer)
 	end
 
 	function containerWindow.onDrop(container, widget, mousePos)
+		if modules.game_supplystash and modules.game_supplystash.shouldBlockItemDrop and modules.game_supplystash.shouldBlockItemDrop(container, widget, mousePos) then
+			return true
+		end
+
 		if containerPanel:getChildByPos(mousePos) then
 			return false
 		end
@@ -174,7 +178,7 @@ function onContainerOpen(container, previousContainer)
 		local child = containerPanel:getChildByIndex(-1)
 
 		if child then
-			child:onDrop(widget, mousePos, true)
+			return child:onDrop(widget, mousePos, true)
 		end
 	end
 
