@@ -11,6 +11,7 @@ local currentCategoryFilter = "all"
 local OPCODE_SUPPLY_STASH_REQUEST = 0x28
 local OPCODE_SUPPLY_STASH_SEND = 0x29
 local SUPPLY_STASH_DETAILS_MARKER = 0x5353
+local SUPPLY_STASH_ITEM_ID = 28750
 local ACTION_OPEN = 1
 local ACTION_STOW_ALL = 2
 local ACTION_WITHDRAW = 3
@@ -122,7 +123,7 @@ local isMouseOverSupplyStash
 
 local function showStashDropBlockedMessage()
 	if modules.game_textmessage and modules.game_textmessage.displayFailureMessage then
-		modules.game_textmessage.displayFailureMessage("Coloque o item dentro do Depot Locker box 1 a 15 e use Stow All.")
+		modules.game_textmessage.displayFailureMessage("Put items inside Depot Locker boxes 1 to 15, then use Stow All.")
 	end
 	return true
 end
@@ -147,9 +148,14 @@ local function isSupplyStashWidget(widget)
 	return false
 end
 
+local function isSupplyStashItemWidget(widget)
+	local item = widget and widget.getItem and widget:getItem()
+	return item and item:isItem() and item:getId() == SUPPLY_STASH_ITEM_ID
+end
+
 function shouldBlockItemDrop(targetWidget, draggedWidget, mousePos)
 	if not window or not window:isVisible() then
-		return false
+		return isSupplyStashItemWidget(targetWidget) and getDraggedItem(draggedWidget) ~= nil and showStashDropBlockedMessage()
 	end
 
 	local item = getDraggedItem(draggedWidget)
@@ -161,7 +167,7 @@ function shouldBlockItemDrop(targetWidget, draggedWidget, mousePos)
 		targetWidget:setBorderWidth(0)
 	end
 
-	if isSupplyStashWidget(targetWidget) or isMouseOverSupplyStash(mousePos) then
+	if isSupplyStashItemWidget(targetWidget) or isSupplyStashWidget(targetWidget) or isMouseOverSupplyStash(mousePos) then
 		return showStashDropBlockedMessage()
 	end
 	return false
