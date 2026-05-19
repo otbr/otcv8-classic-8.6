@@ -206,7 +206,7 @@ local function setDuration(label, duration)
 end
 
 local function addTrackedItem(item)
-    local trackedItem = g_ui.createWidget('InventoryItem')
+    local trackedItem = g_ui.createWidget('TrackedImbuementItem')
     trackedItem.item:setItem(item['item'])
     ItemsDatabase.setTier(trackedItem.item, trackedItem.item:getItem())
     trackedItem.item:setVirtual(true)

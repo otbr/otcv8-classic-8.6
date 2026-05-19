@@ -59,7 +59,7 @@ ImbuementSlotInactive < FlatPanel
     image-source: /images/game/trackers/imbue-slot
     image-rect: 0 0 32 32
 
-InventoryItem < Panel
+TrackedImbuementItem < Panel
   height: 36
   margin-top: 3
   layout: anchor
